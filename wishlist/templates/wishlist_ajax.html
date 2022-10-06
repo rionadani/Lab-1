@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<nav class="navbar" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">Riona Adani Ghaisani</span>
+      <a class="btn btn-primary" href="{% url 'wishlist:logout' %}" role="button">Logout</a>
+    </div>
+</nav>
+
+<div class="page">
+    <table class="table table-bordered w-auto" style="margin-left:auto;margin-right:auto;margin-top:25px;">
+        <thead style="background-color: #e3f2fd;">
+            <tr>
+                <th style="text-align:center">Nama Barang</th>
+                <th style="text-align:center">Harga Barang</th>
+                <th style="text-align:center">Deskripsi</th>
+                </tr>
+        </thead>
+        <tbody>
+            {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
+            
+        </tbody>
+    </table>
+    <h5 style="text-align:center;margin-top:25px;font-size: medium;">Sesi terakhir login: {{ last_login }}</h5>
+</div>
+
+<script type="text/javascript">
+    function refresh() {
+        $.ajax({
+            type: "GET",
+            url: '/wishlist/json/',
+            dataType: "json",
+            success: function (data) {
+                datanya = data
+            }
+        });
+        return datanya;
+    }
+
+    function refresh2() {
+        var datanya = refresh();
+        var itemHtml = "<table> <tr> <th>Nama Barang</th> <th> Deskripsi</th> </tr>"
+        for(var i = 0; i < datanya.length; i++){
+            var item = datanya[i].fields;
+            itemHtml += '<tr> <th>' + item.nama_barang + '</th> <th>' + item.harga_barang + '</th> <th>' + item.deskripsi + '</th> </tr>'
+        }
+        itemHtml += "</table>";
+        $('#lala').html(itemHtml);
+    }
+
+</script>
+
+
+{% endblock content %}
